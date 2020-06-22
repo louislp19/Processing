@@ -1,0 +1,141 @@
+// louislp19@hotmail.com
+// Syntaxe Processing version 3.3.6
+// jeudi, 12 octobre 2017
+
+import controlP5.*;
+
+int tileCount = 40;  // défini le nombres de tuiles dans le sketch
+int actRandomSeed = 0;
+int styleDifferent = 1;
+int formeDifferente = 1;
+int sliderValue = 100;
+
+public int numberboxValue = 100;
+
+ControlP5 cp5;
+
+
+void setup() {
+  size(600, 600);
+
+  cp5 = new ControlP5(this);
+
+ // ----------------------- Paramètres des bouttons ---------------------- //
+
+  cp5.addButton("Random")
+    .setValue(0)
+    .setPosition(0, 0)
+    .setSize(100, 19)
+    ;
+
+  cp5.addButton("Rectangle")
+    .setValue(0)
+    .setPosition(0, 20)
+    .setSize(100, 19)
+    ;
+
+  cp5.addButton("Cercle")
+    .setValue(0)
+    .setPosition(0, 40)
+    .setSize(100, 19)
+    ;
+    
+    cp5.addButton("Remplir")
+    .setValue(0)
+    .setPosition(200,0)
+    .setSize(100, 19)
+    ;
+    
+    cp5.addButton("Vide")
+    .setValue(0)
+    .setPosition(100,0)
+    .setSize(100, 19)
+    ;
+
+  cp5.addNumberbox("numberboxValue")
+    .setPosition(500, 0)
+    .setSize(100, 20)
+    .setScrollSensitivity(1.1)
+    .setValue(50)
+    ;
+    
+     cp5.addSlider("sliderValue")
+     .setPosition(100,50)
+     .setRange(0,255)
+     ;
+}
+
+void draw() {
+  tileCount = numberboxValue;
+
+  background(255);
+  smooth();
+  noFill();
+
+  randomSeed(actRandomSeed);
+
+  // gridY et gridX permet a la posX et posY d'avancer dans l'espace
+
+  for (int gridY=0; gridY<tileCount; gridY++) {
+    for (int gridX=0; gridX<tileCount; gridX++) {
+
+      int posX = width/tileCount*gridX;
+      int posY = height/tileCount*gridY;
+
+      int toggle = (int) random(0, 2);
+
+      if (toggle == 0) {
+
+        // -------------------------- Différent styles possibles --------------------- //
+
+        switch (styleDifferent) {
+        case 1 :
+          stroke (random(255), random(255), random(255));
+          strokeWeight(sliderValue/100); // defini l'épaisseur du trait proportionellement à la position de la souris sur l'axe des y.
+          break;
+
+        case 2 :
+          fill(random(255), random(255), random(255));
+          strokeWeight(sliderValue/100); // defini l'épaisseur du trait proportionellement à la position de la souris sur l'axe des y.
+          break;
+        }
+
+        // -------------------------- Différentes formes possibles --------------------- //    
+
+
+        switch (formeDifferente) {
+        case 1 :
+          ellipse(posX, posY, width/tileCount, height/tileCount);
+          break;
+
+        case 2 :
+          rect(posX, posY, width/tileCount, height/tileCount);
+          break;
+
+          // --------------------------------------------------------------------------- //
+        }
+      }
+    }
+  }
+}
+
+       // --------------------- Différents bouttons ------------------------------- //
+public void Random() {
+  actRandomSeed = (int) random(100000);
+}
+
+public void Rectangle() {
+  formeDifferente = 2;
+}
+
+public void Cercle() {
+  formeDifferente = 1;
+}
+
+public void Remplir() {
+  styleDifferent = 2;
+}
+
+public void Vide() {
+  styleDifferent = 1;
+}
